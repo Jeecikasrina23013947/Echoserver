@@ -1,4 +1,4 @@
-# Echoserver
+# EX-01 Echoserver
 Echo server and client using python socket
 # AIM:
 
@@ -26,37 +26,37 @@ Serving the HTML pages.
 
 Testing the webserver
 
-## PROGRAM:
+# PROGRAM:
+## Client.py
 ```
-from http.server import HTTPServer,BaseHTTPRequestHandler
+import socket
 
-content='''
-<!doctype html>
-<html>
-<head>
-<title> My Web Server</title>
-</head>
-<body>
-<h1>Top Five Web Application Development Frameworks</h1>
-<h2>1.Django</h2>
-<h2>2. MEAN Stack</h2>
-<h2>3. React </h2>
-</body>
-</html>
+HOST = "127.0.0.1"  
+PORT = 65432  
 
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall(b"Name: PRIYADARSHINI K, Date: 22-04-2026, Reg No: 212224100046")
+    data = s.recv(1024)
 
-class MyServer(BaseHTTPRequestHandler):
-    def do_GET(self):
-        print("Get request received...")
-        self.send_response(200) 
-        self.send_header("content-type", "text/html")       
-        self.end_headers()
-        self.wfile.write(content.encode())
-
-print("This is my webserver") 
-server_address =('keerthi',2323)
-httpd = HTTPServer(server_address,MyServer)
-httpd.serve_forever()
+print(f"Received {data!r}")
+```
+## Server
+```
+import socket
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        print(f"Connected by {addr}")
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            conn.sendall(data)
 ```
 ##  Architecture Diagram
 
@@ -87,8 +87,10 @@ httpd.serve_forever()
 
 ## OUTPUT:
 ### CLIENT OUTPUT:
+<img width="1366" height="706" alt="eh 1" src="https://github.com/user-attachments/assets/d4fb629b-cffd-4764-afbe-d72a07072027" />
 
 ### SERVER OUTPUT:
+<img width="1366" height="709" alt="eh 2" src="https://github.com/user-attachments/assets/cf08479d-d079-4a1e-8d13-c6316cd658a6" />
 
 ## RESULT:
 The program is executed succesfully
